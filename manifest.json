@@ -1,0 +1,23 @@
+{
+  "name": "Add to Lyft Button",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "This extension allows you to add locations from various websites as starred locations to your Lyft app.",
+  "homepage_url": "https://lyft.com",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "page": "src/bg/background.html",
+    "persistent": true
+  },
+  "page_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "page action demo",
+    "default_popup": "src/page_action/page_action.html"
+  },
+  "options_page": "options.html"
+}
