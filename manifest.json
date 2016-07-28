@@ -19,5 +19,8 @@
     "default_title": "page action demo",
     "default_popup": "src/page_action/page_action.html"
   },
+  "permissions": [
+    "storage", "tabs", "https://api.lyft.com/oauth/authorize", "https://api.lyft.com/oauth/token"
+  ],
   "options_page": "options.html"
 }
