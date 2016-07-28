@@ -1,15 +1,6 @@
 var Settings = {
-
-	// set to false for development
-	ONLINE : false,
-	
-	UI_TIMEOUT : 2000,
-		
-	PROXY : 'https://stage.birdops.com/',
 	CLIENT_ID : 'VaorzjmoQAtG',
 	CLIENT_SECRET : 'X4t1164l_Pjywzi84OaEeJapFuAJ0gkt',
-	ACCESS_TOKEN : null,
-	ACCESS_TOKEN_SECRET : null,
 	BASE_URL : "https://api.lyft.com/oauth/authorize",
 	TOKEN_URL : "https://api.lyft.com/oauth/token",
 	PROFILE_URL : "https://api.lyft.com/v1/profile",
@@ -18,27 +9,20 @@ var Settings = {
 	STATE : "auth",
 	GRANT_TYPE : "authorization_code",
 	
-	AUTH_STATE_LOGIN : 'login',
-	AUTH_STATE_COMPLETED : 'completed',
-	
-	// TODO: Come up with a way to know when to referesh.
 	ACCESS_TOKEN_KEY : 'accessToken',
 	USER_ID_KEY : 'userID',
 	PROPERTIES : [ 'accessToken', 'userID' ],
-			
+
 	properties : null,
 			
 	init : function(success, failure) {
-		
 		chrome.storage.sync.get(this.PROPERTIES, function(properties) {
 			Settings.properties = properties;
 			success(properties);
 		});
-
 	},
 
 	save : function(properties, callback) {
-		
 		chrome.storage.sync.set(properties, function() {
 			for (var key in properties) {
 				Settings.properties[key] = properties[key];
@@ -47,20 +31,16 @@ var Settings = {
 				callback();
 			}
 		});
-
 	},
 	
 	remove : function(callback) {
-
 		chrome.storage.sync.remove(this.PROPERTIES, function() {
 			Settings.init(function() {} );
 			if (callback){
 				callback();
 			}
 		});
-
 	}
-
 }
 
 var OAuth = {
