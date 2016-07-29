@@ -1,5 +1,12 @@
 {
   "name": "Add to Lyft Button",
+  "content_scripts": [
+    {
+      "matches": ["https://www.yelp.com/biz/*", "https://www.google.com/maps/place/*", "https://www.opentable.com/book/view/*", "https://*/*"],
+      "css": ["css/button.css"],
+      "js": ["js/jquery/jquery.min.js", "js/button.js"]
+    }
+  ],
   "version": "1.0.0",
   "manifest_version": 2,
   "description": "This extension allows you to add locations from various websites as starred locations to your Lyft app.",
@@ -20,7 +27,14 @@
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
-    "storage", "tabs", "https://api.lyft.com/oauth/authorize", "https://api.lyft.com/oauth/token", "identity"
+    "storage", 
+    "tabs", 
+    "https://api.lyft.com/oauth/authorize", 
+    "https://api.lyft.com/oauth/token", 
+    "identity",
+    "http://*/*",
+    "https://*/*"
+
   ],
   "options_page": "options.html"
 }

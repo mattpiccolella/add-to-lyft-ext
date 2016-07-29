@@ -5,4 +5,14 @@
 	<body>
 		<h1>Background page</h1>
 	</body>
+	<script type="text/javascript">
+		chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+			console.log('listener');
+		    if (request.method == "getUserID")
+		      sendResponse({lyftId: '1'});
+		    else
+		      sendResponse({}); // snub them.
+		});
+
+	</script>
 </html>

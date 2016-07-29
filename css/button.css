@@ -1,0 +1,39 @@
+.add-to-lyft {
+	border-radius: 3px;
+	display: block;
+	background-color: #FF00BF;
+	display: block;
+	width: 120px;
+	height:26px;
+	/*position: absolute;*/
+}
+
+.add-to-lyft.added:hover {
+	cursor: not-allowed;
+}
+
+.add-to-lyft:hover {
+	cursor: pointer;
+	opacity: .6;
+}
+
+.add-to-lyft img {
+	height: 15.6px;
+	width: 22px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 8px;
+}
+
+.add-to-lyft-text {
+	display: inline-block;
+	/*position: absolute;*/
+	color: white;
+	border: none;
+	font-size: 13px;
+	margin-left: 7px;
+	width: 72px;
+	text-align: center;
+	vertical-align: middle;
+	top: 0;
+}
