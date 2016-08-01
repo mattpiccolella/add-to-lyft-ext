@@ -40,6 +40,12 @@ else if(domain.includes("meetup")) {
 			clickHandlers(); \
 		</script>');
 }
+else if(domain.includes("fandango")) {
+	$('#theaterAddress').after('<div class="add-to-lyft"><img src="http://i.imgur.com/uCdcd0a.png"><div class="add-to-lyft-text">Add to Lyft</div></div>');
+	$('.add-to-lyft').after('<script> \
+			clickHandlers(); \
+		</script>');
+}
 
 // Get Lyft ID into page
 var lyftId; 
@@ -70,6 +76,15 @@ function extractYelpBizUrl(url) {
 	return url.substring(indexOfBiz + 4, url.length);
 }
 
+function extractAirbnbListingId(url) {
+	var documentHtml = document.documentElement.innerHTML;
+	var indexOfHostingId = documentHtml.indexOf('hosting_id');
+	var quote = '&quot;';
+	var documentUpToHosting = documentHtml.substring(indexOfHostingId + 10 + quote.length+1,documentHtml.length);
+	var data = documentHtml.substring(indexOfHostingId+10+quote.length+1, indexOfHostingId+10+quote.length+1 + documentUpToHosting.indexOf(quote)-1)
+	return data;
+}
+
 function clickHandlers() {
 
 	$(".add-to-lyft").click(function() { 
@@ -85,6 +100,8 @@ function clickHandlers() {
 		var addressString;
 		var deeplinkURL;
 		var shortcutType;
+		var date;
+		var time;
 
 		if(domain.includes("yelp")) {
 		    label = $.trim($('.biz-page-title').text());
@@ -103,14 +120,49 @@ function clickHandlers() {
 			shortcutType = "yelp";
 		}
 		else if(domain.includes("opentable")) {
+			label = $('.restaurant-name > h4 > a').html() + " Reservation";
+
+			addressString = $('.content-block-map-info > p').html().replace("<br>", " ");
+
+			deeplinkURL = "yelp:///search?terms="+label.replace(/ /g, '+');
+
+			shortcutType = "opentable";
+
+			date = $('.reservation-date .show-for-desktop-only').html();
+			time = $('#reso-time').html();
+		}
+		else if(domain.includes("airbnb")) {
+			label = $.trim($('.itinerary-header .text-center-on-sm span').first().text()).replace("You’re going to ",'').replace('!','') + " Airbnb";
+
+			addressString = $('div[data-reactid=".5.4.0.0.1.3.0.1.0"]').html().replace(/<br>/g, " ");
+
+			var baseDeeplinkURL = "airbnb://rooms/";
+			var roomId = extractAirbnbListingId(window.location.href)
+			console.log(roomId);
+			deeplinkURL = baseDeeplinkURL + roomId;
+
+			shortcutType = "airbnb";
+
+			date = $('span[data-reactid=".5.4.0.0.1.2.0.1.1.0"]').text();
+			time = $('span[data-reactid=".5.4.0.0.1.2.0.1.1.2"]').text().replace("Anytime after ", "");
+		}
+		else if(domain.includes("fandango")) {
+			label = $('#movieTitle').html() + " at " + $('#theaterName').html();
+
+			addressString = $('#theaterAddress > a').html().replace("<br>", " ");
+
+			deeplinkURL = "";
+
+			shortcutType = "fandango";
+
+			date = $('#movieDate').html();
+
+			time = $('#movieTime').html();
 
 		}
-
-		console.log(label);
-		console.log(addressString);
-		console.log(lyftId);
-		console.log(deeplinkURL);
-		console.log(shortcutType);
+		else {
+			return;
+		}
 
 		// Perform Ajax call to add to lyft
 		var postParams = {
@@ -120,6 +172,16 @@ function clickHandlers() {
 			deeplinkUrl: deeplinkURL,
 			shortcutType: shortcutType
 		};
+
+		if(date != null) {
+			postParams['date'] = date;
+		}
+
+		if(time != null) {
+			postParams['time'] = time;
+		}
+
+		console.log(postParams);
 
 		$.ajax({
 			url: 'https://intense-ravine-96517.herokuapp.com/add_shortcut/',
